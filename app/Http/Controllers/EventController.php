@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use Illuminate\Http\Request;
 
@@ -12,8 +13,13 @@ class EventController extends Controller
      */
     public function index()
     {
-        //
-    }
+         //// Fetch all events with related categories and locations
+     $events = Event::with(['category', 'location'])->get();
+
+        // Return the events as a collection of EventResource
+    return EventResource::collection($events);
+
+}
 
     /**
      * Show the form for creating a new resource.

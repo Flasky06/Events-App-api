@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Category;
+use App\Models\Event;
 use App\Models\Location;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -18,12 +19,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            // 'name' => 'Test User',
+            // 'email' => 'test@example.com',
         ]);
 
         Category::factory(5)->create();
 
         Location::factory(12)->create();
+
+        Event::factory(20)->create();
     }
 }

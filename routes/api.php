@@ -1,9 +1,11 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\LocationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Logging\EventLogger;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -38,3 +40,6 @@ Route::put('/location/{location}', [LocationController::class, 'update']);
 
 // Delete Location
 Route::delete('/location/{location}', [LocationController::class, 'destroy']);
+
+// Get all Events
+Route::get('/events', [EventController::class, 'index']);
