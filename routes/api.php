@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,3 +23,18 @@ Route::put('/category/{category}', [CategoryController::class, 'update']);
 
 // Delete Category
 Route::delete('/category/{category}', [CategoryController::class, 'destroy']);
+
+// Get all Locations
+Route::get('/locations', [LocationController::class, 'index']);
+
+// Create new Location
+Route::post('/location', [LocationController::class, 'store']);
+
+// Get Location
+Route::get('/location/{location}', [LocationController::class, 'show']);
+
+// Update Location
+Route::put('/location/{location}', [LocationController::class, 'update']);
+
+// Delete Location
+Route::delete('/location/{location}', [LocationController::class, 'destroy']);
