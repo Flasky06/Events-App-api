@@ -34,7 +34,24 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'startdatetime' => 'required|date|after:now',
+            'enddatetime' => 'required|date|after:startdatetime',
+            'ticketsavailable' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'location_type' => 'required|in:online,physical',
+            'link_url' => 'nullable|url|required_if:location_type,online',
+            'location_id' => 'nullable|exists:locations,id|required_if:location_type,physical',
+            'location_description' => 'nullable|string',
+            'img_url' => 'nullable|url',
+        ]);
+
+
+        $event = Event::create($validatedData);
+        return new EventResource($event);
     }
 
     /**
@@ -42,7 +59,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        //
+        return new EventResource($event);
     }
 
     /**
@@ -58,7 +75,27 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $validatedData = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'category_id' => 'required|exists:categories,id',
+            'startdatetime' => 'required|date|after:now',
+            'enddatetime' => 'required|date|after:startdatetime',
+            'ticketsavailable' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:0',
+            'location_type' => 'required|in:online,physical',
+            'link_url' => 'nullable|url|required_if:location_type,online',
+            'location_id' => 'nullable|exists:locations,id|required_if:location_type,physical',
+            'location_description' => 'nullable|string',
+            'img_url' => 'nullable|url',
+        ]);
+
+        $event->update($validatedData);
+
+        return response()->json([
+            'message' => 'Category updated successfully',
+            'data' => $event
+        ]);
     }
 
     /**
@@ -66,6 +103,10 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        $event->delete();
+
+        return response()->json([
+            'message' => 'Event deleted successfully',
+        ]);
     }
 }

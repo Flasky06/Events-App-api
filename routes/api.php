@@ -43,3 +43,15 @@ Route::delete('/location/{location}', [LocationController::class, 'destroy']);
 
 // Get all Events
 Route::get('/events', [EventController::class, 'index']);
+
+// Create Event
+Route::post('/event', [EventController::class, 'store']);
+
+// Get Event
+Route::get('/event/{event}', [EventController::class, 'show']);
+
+// Update Event
+Route::put('/event/{event}', [EventController::class, 'update']);
+
+// Delete Event
+Route::delete('/event/{event}', [EventController::class, 'destroy']);
