@@ -31,7 +31,11 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData=$request->validate(['county' => 'required|string|max:30',
+    ]);
+
+    $location = Location::create($validatedData);
+    return new LocationResource($location);
     }
 
     /**
@@ -39,7 +43,8 @@ class LocationController extends Controller
      */
     public function show(Location $location)
     {
-        //
+        return new LocationResource($location);
+
     }
 
     /**
@@ -55,14 +60,24 @@ class LocationController extends Controller
      */
     public function update(Request $request, Location $location)
     {
-        //
-    }
+        $validatedData=$request->validate(['county' => 'required|string|max:30',
+    ]);
+
+        $location->update(attributes: $validatedData);
+
+        return response()->json([
+        'message' => 'Location updated successfully',
+        'data' => $location
+        ]);    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Location $location)
     {
-        //
+        $location->delete();
+
+        return response()->json(
+          ['message' => 'Location deleted successfully' ]);
     }
 }
