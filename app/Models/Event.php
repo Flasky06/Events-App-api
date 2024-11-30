@@ -15,6 +15,14 @@ class Event extends Model
         'location_id', 'location_description', 'img_url'
     ];
 
+
+    // Define the relationship with User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
     // Define the relationship with Category
     public function category()
     {

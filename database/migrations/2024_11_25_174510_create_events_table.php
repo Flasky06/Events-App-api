@@ -29,9 +29,14 @@ return new class extends Migration
                   ->onDelete('cascade');
             $table->text('location_description')->nullable();
             $table->string('img_url')->nullable();
+
+            $table->foreignId('user_id')
+            ->constrained('users')
+            ->onDelete('cascade');
             $table->timestamps();
         });
     }
+    // $table->enum('role', ['admin', 'user', 'eventOrganiser']);
 
     /**
      * Reverse the migrations.

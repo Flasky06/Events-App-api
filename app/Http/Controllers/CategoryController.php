@@ -65,7 +65,7 @@ class CategoryController extends Controller
     ]);
 
     // Update the category
-    $category->update($validatedData);
+    $category->update(attributes: $validatedData);
 
     // Optionally return a response
     return response()->json([

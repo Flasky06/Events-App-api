@@ -7,9 +7,8 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 
 class RegisteredUserController extends Controller
 {
@@ -18,24 +17,31 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): Response
+    public function store(Request $request)
     {
-        $request->validate([
+        // Validate incoming request
+        $fields = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'email' => ['required', 'email', 'unique:' . User::class],
+            'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->string('password')),
-        ]);
+        // Hash the password
+        $fields['password'] = Hash::make($fields['password']);
 
+        // Create a new user
+        $user = User::create($fields);
+
+        // Dispatch registered event
         event(new Registered($user));
 
-        Auth::login($user);
+        // Generate authentication token
+        $token = $user->createToken($request->name);
 
-        return response()->noContent();
+        // Return response
+        return response()->json([
+            'user' => $user,
+            'token' => $token->plainTextToken,
+        ], 201);
     }
 }

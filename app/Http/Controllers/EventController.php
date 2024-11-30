@@ -49,10 +49,15 @@ class EventController extends Controller
             'img_url' => 'nullable|url',
         ]);
 
+        // Add the authenticated user's ID to the event data
+        $validatedData['user_id'] = auth()->id();
 
+        // Create the event with the validated data
         $event = Event::create($validatedData);
+
         return new EventResource($event);
     }
+
 
     /**
      * Display the specified resource.
